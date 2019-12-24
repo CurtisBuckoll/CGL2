@@ -27,7 +27,7 @@ public:
 
     // -----------------------------------------------------------------
     // 
-    virtual double dot( const Vec3& rhs ) const;
+    double dot( const Vec3& rhs ) const;
 
     // -----------------------------------------------------------------
     //
@@ -47,7 +47,11 @@ public:
 
     // -----------------------------------------------------------------
     //
-    virtual double operator[]( int i ) const;
+    static void test();
+
+    // -----------------------------------------------------------------
+    //
+    double operator[]( size_t i ) const;
 
     // -----------------------------------------------------------------
     //
@@ -56,7 +60,7 @@ public:
     // -----------------------------------------------------------------
     // The vector * matrix multiplication is performed as if the Vec3 is
     // a homogeneous coordinate.
-    virtual Vec3 operator*( const Mat4& rhs ) const;
+    Vec3 operator*( const Mat4& rhs ) const;
 
     // -----------------------------------------------------------------
     //
@@ -68,11 +72,11 @@ public:
 
     // -----------------------------------------------------------------
     //
-    ~Vec3() = default;
-    Vec3( const Vec3& ) = default;
-    Vec3( Vec3&& ) = default;
+    ~Vec3()                        = default;
+    Vec3( const Vec3& )            = default;
+    Vec3( Vec3&& )                 = default;
     Vec3& operator=( const Vec3& ) = default;
-    Vec3& operator=( Vec3&& ) = default;
+    Vec3& operator=( Vec3&& )      = default;
 
     // -----------------------------------------------------------------
     //

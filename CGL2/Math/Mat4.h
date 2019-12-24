@@ -7,6 +7,9 @@
 namespace math
 {
 
+class Vec3;
+class Vec4;
+
 // =======================================================================
 //
 class Mat4
@@ -75,11 +78,19 @@ public:
 
     // -----------------------------------------------------------------
     //
-    Mat4 operator*( const Mat4& mat ) const;
+    static void test();
 
     // -----------------------------------------------------------------
     //
-    //vec4 operator*(const vec4& vec) const;
+    Mat4 operator*( const Mat4& mat ) const;
+
+    // -----------------------------------------------------------------
+    // Transform a vector.
+    Vec3 operator*( const Vec3& vec ) const;
+
+    // -----------------------------------------------------------------
+    // Transforming a homogeneous coordinate.
+    Vec4 operator*( const Vec4& vec ) const;
 
     // -----------------------------------------------------------------
     //
@@ -91,11 +102,11 @@ public:
 
     // -----------------------------------------------------------------
     //
-    ~Mat4() = default;
-    Mat4( const Mat4& ) = default;
-    Mat4( Mat4&& ) = default;
+    ~Mat4()                        = default;
+    Mat4( const Mat4& )            = default;
+    Mat4( Mat4&& )                 = default;
     Mat4& operator=( const Mat4& ) = default;
-    Mat4& operator=( Mat4&& ) = default;
+    Mat4& operator=( Mat4&& )      = default;
 
 private:
 

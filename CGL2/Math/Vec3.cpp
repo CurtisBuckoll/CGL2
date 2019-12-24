@@ -6,9 +6,6 @@
 
 #include "Mat4.h"
 
-/**
-normal vs
-*/
 
 // =======================================================================
 //
@@ -92,7 +89,7 @@ void Vec3::print() const
 
 // =======================================================================
 //
-double Vec3::operator[]( int i ) const
+double Vec3::operator[]( size_t i ) const
 {
     switch( i )
     {
@@ -153,6 +150,33 @@ Vec3 Vec3::operator+( const Vec3& rhs ) const
     return Vec3( x_ + rhs.x_,
                  y_ + rhs.y_,
                  z_ + rhs.z_ );
+}
+
+// =======================================================================
+//
+void Vec3::test()
+{
+    std::cout << std::endl << "Unit Tests: Vec3" << std::endl;
+    Mat4 M = Mat4::translate( 1.0, 2.0, 3.0 );
+    Vec3 v( 1.0, 2.0, 3.0 );
+    M.print();
+    v.print();
+    ( v * M ).print();
+    ( M * v ).print();
+
+    M = Mat4::rotate_deg( 66.66666666, AXIS::z );
+    Vec3 v2( 1.0, 0.0, 0.0 );
+    M.print();
+    v2.print();
+    ( v2 * M ).print();
+    ( M * v2 ).print();
+
+    M = Mat4::translate( 1.0, 2.0, 3.0 ) * M;
+    M.print();
+    v2 = Vec3( 1.0, 2.0, 3.0 );
+    ( v2 * M ).print();
+    ( M * v2 ).print();
+    std::cout << ( v2 * M ).length() << std::endl;
 }
 
 }
