@@ -9,7 +9,7 @@ namespace geom
 {
 
 // =======================================================================
-//
+// The plane equation is stored in the form: Ax + By + Cz - D = 0
 class Plane
 {
 public:
@@ -30,16 +30,20 @@ public:
     double test_coord( const math::Vec4& coord ) const;
 
     // -----------------------------------------------------------------
-    // Returns true if intersection found
-    bool find_ray_intersect( const math::Vec4& p,
-                             const math::Vec4& v,
-                             math::Vec4& result );
+    // Returns true if intersection found in the positive or negative
+    // direction of the ray.
+    // 'pos' must have homogeneous w = 1.0
+    bool ray_intersect( const math::Vec4& pos,
+                        const math::Vec3& v,
+                        math::Vec4& result );
 
     // -----------------------------------------------------------------
-    // Returns true if intersection found
-    bool find_segment_intersect( const math::Vec4& p0, 
-                                 const math::Vec4& p1,
-                                 math::Vec4& result );
+    // Returns true if intersection found along the line segment between
+    // 'p0' and 'p1'.
+    // 'p0' and 'p1' must both have homogeneous w = 1.0
+    bool segment_intersect( const math::Vec4& p0,
+                            const math::Vec4& p1,
+                            math::Vec4& result );
 
     // -----------------------------------------------------------------
     //

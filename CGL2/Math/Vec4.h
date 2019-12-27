@@ -19,7 +19,7 @@ public:
 
     // -----------------------------------------------------------------
     //
-    constexpr Vec4();
+    Vec4();
 
     // -----------------------------------------------------------------
     //
@@ -32,6 +32,13 @@ public:
     // Construct a homogeneous coordinate from a 3 vector.
     Vec4( const Vec3& xyz, 
           double w = 1.0 );
+
+    // -----------------------------------------------------------------
+    //
+    void reset( double x,
+                double y,
+                double z,
+                double w = 1.0 );
 
     // -----------------------------------------------------------------
     // All of x, y, z, w components are considered in this calculation.
@@ -66,6 +73,16 @@ public:
 
     // -----------------------------------------------------------------
     // Returns Vec3. This is a specialization to the types of operations
+    // we know we will perform - Addition of homogeneous coordinates
+    // should return a vector.
+    //
+    // We also do NOT take into account homogeneous coordinates where
+    // the w componenent is not equal to 1. This is for speed. We should
+    // not worry about this if only applying affine transforms.
+    Vec3 operator+( const Vec4& rhs ) const;
+
+    // -----------------------------------------------------------------
+    // Returns Vec3. This is a specialization to the types of operations
     // we know we will perform - Sutraction of homogeneous coordinates
     // should return a vector.
     //
@@ -75,14 +92,12 @@ public:
     Vec3 operator-( const Vec4& rhs ) const;
 
     // -----------------------------------------------------------------
-    // Returns Vec3. This is a specialization to the types of operations
-    // we know we will perform - Addition of homogeneous coordinates
-    // should return a vector.
-    //
-    // We also do NOT take into account homogeneous coordinates where
-    // the w componenent is not equal to 1. This is for speed. We should
-    // not worry about this if only applying affine transforms.
-    Vec3 operator+( const Vec4& rhs ) const;
+    // Affects x, y, z components and returns a homogeneous coordinate.
+    Vec4 operator+( const Vec3& rhs ) const;
+    
+    // -----------------------------------------------------------------
+    // Affects x, y, z components and returns a homogeneous coordinate.
+    Vec4 operator-( const Vec3& rhs ) const;
 
     // -----------------------------------------------------------------
     //

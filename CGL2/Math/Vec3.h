@@ -26,6 +26,12 @@ public:
                     double z );
 
     // -----------------------------------------------------------------
+    //
+    void reset( double x,
+                double y,
+                double z );
+
+    // -----------------------------------------------------------------
     // 
     double dot( const Vec3& rhs ) const;
 
@@ -59,7 +65,7 @@ public:
 
     // -----------------------------------------------------------------
     // The vector * matrix multiplication is performed as if the Vec3 is
-    // a homogeneous coordinate.
+    // a 4-vector with the w component fixed to 0.
     Vec3 operator*( const Mat4& rhs ) const;
 
     // -----------------------------------------------------------------

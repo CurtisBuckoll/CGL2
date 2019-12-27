@@ -279,12 +279,11 @@ Mat4 Mat4::inverse() const
 //
 void Mat4::print() const
 {
-    const double epsilon = 0.0001;
     for( int r = 0; r < kMAT_SIZE_; ++r )
     {
         for( int c = 0; c < kMAT_SIZE_; ++c )
         {
-            std::cout << std::setprecision( 4 ) << (std::abs(matrix_[r][c]) < epsilon ? 0.0 : matrix_[r][c]) << "\t";
+            std::cout << std::setprecision( 4 ) << (std::abs(matrix_[r][c]) < EPSILON_COARSE ? 0.0 : matrix_[r][c]) << "\t";
         }
         std::cout << std::endl;
     }

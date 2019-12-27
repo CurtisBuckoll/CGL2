@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "../Math/Utility.h"
+
 // =======================================================================
 //
 namespace geom
@@ -31,23 +33,44 @@ double Plane::test_coord( const math::Vec4& coord ) const
     return p_.dot( coord );
 }
 
-// -----------------------------------------------------------------
-// Returns true if intersection found
-bool Plane::find_ray_intersect( const math::Vec4& p,
-                                const math::Vec4& v,
-                                math::Vec4& result )
+// =======================================================================
+// 
+bool Plane::ray_intersect( const math::Vec4& pos,
+                           const math::Vec3& v,
+                           math::Vec4& result )
 {
-    // TODO: implement
+    const double denom = v.x_ * p_.x_ + 
+                         v.y_ * p_.y_ + 
+                         v.z_ * p_.z_;
+    if( math::close_to_zero_fine( denom ) )
+    {
+        return false;
+    }
+    const double t = -pos.dot( p_ ) / denom;
+    result = math::Vec4( pos + ( v * t ) );
     return true;
 }
 
-// -----------------------------------------------------------------
-// Returns true if intersection found
-bool Plane::find_segment_intersect( const math::Vec4& p0,
-                                    const math::Vec4& p1,
-                                    math::Vec4& result )
+// =======================================================================
+// 
+bool Plane::segment_intersect( const math::Vec4& p0,
+                               const math::Vec4& p1,
+                               math::Vec4& result )
 {
-    // TODO: implement
+    const math::Vec3 v = p1 - p0;
+    const double denom = v.x_ * p_.x_ +
+                         v.y_ * p_.y_ +
+                         v.z_ * p_.z_;
+    if( math::close_to_zero_fine( denom ) )
+    {
+        return false;
+    }
+    const double t = -p0.dot( p_ ) / denom;
+    if( t < 0 || t > 1 )
+    {
+        return false;
+    }
+    result = math::Vec4( p0 + ( v * t ) );
     return true;
 }
 
@@ -87,6 +110,54 @@ void Plane::test()
     std::cout << Q.test_coord( f ) << std::endl;
     std::cout << Q.test_coord( g ) << std::endl;
     std::cout << Q.test_coord( math::Vec4( 6.0, 2.0, 6.0 ) ) << std::endl;
+
+    std::cout << std::endl << "Ray Intersect:" << std::endl;
+
+    Plane R( 2.0, 1.0, -4.0, -4.0 );
+    math::Vec4 pos1( 0.0, 2.0, 0.0 );
+    math::Vec3 dir1( 1.0, 3.0, 1.0 );
+    math::Vec4 res1;
+    if( !R.ray_intersect( pos1, dir1, res1 ) )
+    {
+        std::cout << "No unique intersection." << std::endl;
+    }
+    else
+    {
+        res1.print();
+    }
+
+    math::Vec4 pos2( 1.0, 4.0, 0.0 );
+    math::Vec3 dir2( 1.0, 2.0, 1.0 );
+    math::Vec4 res2;
+    if( !R.ray_intersect( pos2, dir2, res2 ) )
+    {
+        std::cout << "No unique intersection." << std::endl;
+    }
+    else
+    {
+        res2.print();
+    }
+
+    std::cout << std::endl << "Segment Intersect:" << std::endl;
+    math::Vec4 res3;
+    if( !R.segment_intersect( pos1, pos1 + dir1 * 3.0, res3 ) )
+    {
+        std::cout << "No unique intersection." << std::endl;
+    }
+    else
+    {
+        res3.print();
+    }
+
+    math::Vec4 res4;
+    if( !R.segment_intersect( pos1, pos1 + dir1, res4 ) )
+    {
+        std::cout << "No unique intersection." << std::endl;
+    }
+    else
+    {
+        res4.print();
+    }
 }
 
 }

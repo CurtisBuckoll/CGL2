@@ -85,7 +85,7 @@ public:
     Mat4 operator*( const Mat4& mat ) const;
 
     // -----------------------------------------------------------------
-    // Transform a vector.
+    // Transform a vector with the w componenet fixed at 0.
     Vec3 operator*( const Vec3& vec ) const;
 
     // -----------------------------------------------------------------

@@ -25,11 +25,22 @@ constexpr Vec3::Vec3()
 //
 constexpr Vec3::Vec3( double x,
                       double y,
-                      double z  )
+                      double z )
     : x_( x )
     , y_( y )
     , z_( z )
 {
+}
+
+// =======================================================================
+//
+void Vec3::reset( double x,
+                  double y,
+                  double z )
+{
+    x_ = x;
+    y_ = y;
+    z_ = z;
 }
 
 // =======================================================================

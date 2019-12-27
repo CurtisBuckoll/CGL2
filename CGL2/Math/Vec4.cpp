@@ -13,7 +13,7 @@ namespace math
 
 // =======================================================================
 //
-constexpr Vec4::Vec4()
+Vec4::Vec4()
     : x_(0.0)
     , y_(0.0)
     , z_(0.0)
@@ -43,6 +43,19 @@ Vec4::Vec4( const Vec3& xyz,
     , z_( xyz.z_ )
     , w_( w )
 {
+}
+
+// =======================================================================
+//
+void Vec4::reset( double x,
+                  double y,
+                  double z,
+                  double w /*= 1.0*/ )
+{
+    x_ = x;
+    y_ = y;
+    z_ = z;
+    w_ = w;
 }
 
 // =======================================================================
@@ -114,6 +127,15 @@ Vec4 Vec4::operator*( const Mat4& rhs ) const
 
 // =======================================================================
 //
+Vec3 Vec4::operator+( const Vec4& rhs ) const
+{
+    return Vec3( x_ + rhs.x_,
+                 y_ + rhs.y_,
+                 z_ + rhs.z_ );
+}
+
+// =======================================================================
+//
 Vec3 Vec4::operator-( const Vec4& rhs ) const
 {
     return Vec3( x_ - rhs.x_,
@@ -123,11 +145,20 @@ Vec3 Vec4::operator-( const Vec4& rhs ) const
 
 // =======================================================================
 //
-Vec3 Vec4::operator+( const Vec4& rhs ) const
+Vec4 Vec4::operator+( const Vec3& rhs ) const
 {
-    return Vec3( x_ + rhs.x_,
+    return Vec4( x_ + rhs.x_,
                  y_ + rhs.y_,
                  z_ + rhs.z_ );
+}
+
+// =======================================================================
+//
+Vec4 Vec4::operator-( const Vec3& rhs ) const
+{
+    return Vec3( x_ - rhs.x_,
+                 y_ - rhs.y_,
+                 z_ - rhs.z_ );
 }
 
 // =======================================================================
