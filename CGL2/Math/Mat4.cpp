@@ -1,11 +1,13 @@
 #include "Mat4.h"
 
-#include <cmath>
 #include <iostream>
+#include <cmath>
 #include <iomanip>
 #include <random>
 
 #include "MathConst.h"
+#include "Vec3.h"
+#include "Vec4.h"
 
 // =======================================================================
 //
@@ -277,12 +279,11 @@ Mat4 Mat4::inverse() const
 //
 void Mat4::print() const
 {
-    const double epsilon = 0.0001;
     for( int r = 0; r < kMAT_SIZE_; ++r )
     {
         for( int c = 0; c < kMAT_SIZE_; ++c )
         {
-            std::cout << std::setprecision( 4 ) << (std::abs(matrix_[r][c]) < epsilon ? 0.0 : matrix_[r][c]) << "\t";
+            std::cout << std::setprecision( 4 ) << (std::abs(matrix_[r][c]) < EPSILON_COARSE ? 0.0 : matrix_[r][c]) << "\t";
         }
         std::cout << std::endl;
     }
@@ -302,7 +303,7 @@ Mat4 Mat4::operator*( const Mat4& mat ) const
             double sum = 0.0f;
             for( int i = 0; i < kMAT_SIZE_; ++i )
             {
-                sum += matrix_[r][i] * mat.matrix_[i][c];
+                sum += matrix_[r][i] * mat[i][c];
             }
             result.matrix_[r][c] = sum;
         }
@@ -313,21 +314,36 @@ Mat4 Mat4::operator*( const Mat4& mat ) const
 
 // =======================================================================
 //
-//vec4 mat4::operator*( const vec4& vec ) const
-//{
-//    vec4 result = vec4( 0.0f, 0.0f, 0.0f, 0.0f );
+Vec3 Mat4::operator*( const Vec3& vec ) const
+{
+    Vec3 result;
+
+    for( size_t i = 0; i < kMAT_SIZE_ - 1; ++i )
+    {
+        result.x_ += matrix_[0][i] * vec[i];
+        result.y_ += matrix_[1][i] * vec[i];
+        result.z_ += matrix_[2][i] * vec[i];
+    }
+
+    return result;
+}
+
+// =======================================================================
 //
-//    for( int i = 0; i < 4; i++ )
-//    {
-//        result.x += matrix[i][0] * vec[i];
-//        result.y += matrix[i][1] * vec[i];
-//        result.z += matrix[i][2] * vec[i];
-//        result.w += matrix[i][3] * vec[i];
-//    }
-//
-//    result.color = vec.color;
-//    return result;
-//}
+Vec4 Mat4::operator*( const Vec4& vec ) const
+{
+    Vec4 result{ 0.0, 0.0, 0.0, 0.0 };
+
+    for( size_t i = 0; i < kMAT_SIZE_; ++i )
+    {
+        result.x_ += matrix_[0][i] * vec[i];
+        result.y_ += matrix_[1][i] * vec[i];
+        result.z_ += matrix_[2][i] * vec[i];
+        result.w_ += matrix_[3][i] * vec[i];
+    }
+
+    return result;
+}
 
 // =======================================================================
 //
@@ -341,6 +357,61 @@ double* Mat4::operator[]( size_t r )
 const double* Mat4::operator[]( size_t r ) const
 {
     return &matrix_[r][0];
+}
+
+// =======================================================================
+//
+void Mat4::test()
+{
+    std::cout << std::endl << "Unit Tests: Mat4" << std::endl;
+    math::Mat4 R( math::Mat4::rotate_deg( 45, math::AXIS::z ) );
+    R.print();
+    R.inverse().print();
+
+    ( R * R.inverse() ).print();
+    ( R.inverse() * R ).print();
+
+    R = math::Mat4::rotate_deg( 45, math::AXIS::y );
+    R.print();
+
+    ( R * R.inverse() ).print();
+    ( R.inverse() * R ).print();
+
+    R = math::Mat4::rotate_deg( 45, math::AXIS::x );
+    R.print();
+
+    ( R * R.inverse() ).print();
+    ( R.inverse() * R ).print();
+
+    math::Mat4 S( math::Mat4::scale( 1.0, 2.0, 3.0 ) );
+    S.print();
+
+    math::Mat4 U = math::Mat4::scale_uniform( 4.0 );
+    U.print();
+
+    math::Mat4 T = math::Mat4::translate( 5.0, 6.0, 7.0 );
+    //T[1][1] = 0.0;
+    //T[3][1] = 1.0;
+    T.print();
+
+    T.inverse().print();
+
+    //( T * T.inverse() ).print();
+
+    math::Mat4 m;
+    m.print();
+
+    m.random( 1.0, 10.0 );
+    m.print();
+    //m[0][0] = 1.0;
+    //m[1][0] = 1.0;
+    //m[0][1] = 3.0;
+    //m[1][1] = 3.0;
+
+    math::Mat4 mi = m.inverse();
+    mi.print();
+    ( mi * m ).print();
+    ( m * mi ).print();
 }
 
 }

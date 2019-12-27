@@ -147,15 +147,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Geometry\Plane.h" />
+    <ClInclude Include="Geometry\Triangle.h" />
+    <ClInclude Include="Geometry\Vertex.h" />
     <ClInclude Include="Math\Mat4.h" />
     <ClInclude Include="Math\MathConst.h" />
+    <ClInclude Include="Math\Utility.h" />
+    <ClInclude Include="Math\Vec2.h" />
+    <ClInclude Include="Math\Vec3.h" />
     <ClInclude Include="Math\Vec4.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CGL2.cpp" />
+    <ClCompile Include="Geometry\Plane.cpp" />
+    <ClCompile Include="Geometry\Triangle.cpp" />
+    <ClCompile Include="Geometry\Vertex.cpp" />
     <ClCompile Include="Math\Mat4.cpp" />
+    <ClCompile Include="Math\Vec2.cpp" />
+    <ClCompile Include="Math\Vec3.cpp" />
     <ClCompile Include="Math\Vec4.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

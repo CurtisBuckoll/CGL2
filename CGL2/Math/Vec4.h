@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Vec3.h"
+
 // =======================================================================
 //
 namespace math
@@ -17,33 +19,36 @@ public:
 
     // -----------------------------------------------------------------
     //
-    constexpr Vec4();
+    Vec4();
 
     // -----------------------------------------------------------------
     //
     constexpr Vec4( double x,
                     double y,
                     double z,
-                    double w = 1.0f );
+                    double w = 1.0 );
 
     // -----------------------------------------------------------------
-    // The w component is included.
+    // Construct a homogeneous coordinate from a 3 vector.
+    Vec4( const Vec3& xyz, 
+          double w = 1.0 );
+
+    // -----------------------------------------------------------------
+    //
+    void reset( double x,
+                double y,
+                double z,
+                double w = 1.0 );
+
+    // -----------------------------------------------------------------
+    // All of x, y, z, w components are considered in this calculation.
     double dot( const Vec4& rhs ) const;
 
     // -----------------------------------------------------------------
-    //
-    Vec4 cross( const Vec4& rhs ) const;
-
-    // -----------------------------------------------------------------
-    //
-    double length() const;
-
-    // -----------------------------------------------------------------
-    //
-    void normalize();
-
-    // -----------------------------------------------------------------
-    //
+    // I think we should not ever really have to rely on this if
+    // restricted to affine transforms.
+    // But let's include the method anyways.
+    // This will not be fast. Avoid if possible.
     void hgdivide();
 
     // -----------------------------------------------------------------
@@ -52,31 +57,55 @@ public:
 
     // -----------------------------------------------------------------
     //
-    double operator[]( int i ) const;
+    static void test();
 
     // -----------------------------------------------------------------
     //
-    Vec4 operator*( double scalar ) const;
+    double operator[]( size_t i ) const;
+
+    // -----------------------------------------------------------------
+    // Use friend class or something if we need this:
+    //Vec4 operator*( double scalar ) const;
 
     // -----------------------------------------------------------------
     //
     Vec4 operator*( const Mat4& rhs ) const;
 
     // -----------------------------------------------------------------
+    // Returns Vec3. This is a specialization to the types of operations
+    // we know we will perform - Addition of homogeneous coordinates
+    // should return a vector.
     //
-    Vec4 operator-( const Vec4& rhs ) const;
+    // We also do NOT take into account homogeneous coordinates where
+    // the w componenent is not equal to 1. This is for speed. We should
+    // not worry about this if only applying affine transforms.
+    Vec3 operator+( const Vec4& rhs ) const;
+
+    // -----------------------------------------------------------------
+    // Returns Vec3. This is a specialization to the types of operations
+    // we know we will perform - Sutraction of homogeneous coordinates
+    // should return a vector.
+    //
+    // We also do NOT take into account homogeneous coordinates where
+    // the w componenent is not equal to 1. This is for speed. We should
+    // not worry about this if only applying affine transforms.
+    Vec3 operator-( const Vec4& rhs ) const;
+
+    // -----------------------------------------------------------------
+    // Affects x, y, z components and returns a homogeneous coordinate.
+    Vec4 operator+( const Vec3& rhs ) const;
+    
+    // -----------------------------------------------------------------
+    // Affects x, y, z components and returns a homogeneous coordinate.
+    Vec4 operator-( const Vec3& rhs ) const;
 
     // -----------------------------------------------------------------
     //
-    Vec4 operator+( const Vec4& rhs ) const;
-
-    // -----------------------------------------------------------------
-    //
-    ~Vec4() = default;
-    Vec4( const Vec4& ) = default;
-    Vec4( Vec4&& ) = default;
+    ~Vec4()                        = default;
+    Vec4( const Vec4& )            = default;
+    Vec4( Vec4&& )                 = default;
     Vec4& operator=( const Vec4& ) = default;
-    Vec4& operator=( Vec4&& ) = default;
+    Vec4& operator=( Vec4&& )      = default;
 
     // -----------------------------------------------------------------
     //
